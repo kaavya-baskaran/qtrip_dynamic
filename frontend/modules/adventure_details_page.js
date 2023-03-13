@@ -64,7 +64,7 @@ function addBootstrapPhotoGallery(images) {
 //Implementation of conditional rendering of DOM based on availability
 function conditionalRenderingOfReservationPanel(adventure) {
   // TODO: MODULE_RESERVATIONS
-  // 1. If the adventure is already reserved, display the sold-out message.
+   // 1. If the adventure is already reserved, display the sold-out message.
   
    if (adventure.available) {
      document.getElementById("reservation-panel-sold-out").style.display ="none";
@@ -88,13 +88,40 @@ function captureFormSubmit(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. Capture the query details and make a POST API call using fetch() to make the reservation
   // 2. If the reservation is successful, show an alert with "Success!" and refresh the page. If the reservation fails, just show an alert with "Failed!".
+  let form = document.getElementById("myForm");
+   form.addEventListener("submit", (e) => {
+     e.preventDefault();
+      console.log("Form Submitted!");
+       let name = form.elements["name"].value;
+       let date = form.elements["date"].value;
+       let person = form.elements["person"].value;
+        let data = {
+           name: name,
+            date: date,
+             person: person,
+              adventure: adventure.id,
+            };
+             const send = { method: "POST",headers: {"Content-Type": "application/json",},body: JSON.stringify(data),};
+                 fetch(config.backendEndpoint + "/reservations/new", send)
+                  .then((response) => response.json())
+                   .then((json) => {
+                     alert("Success!");
+                      location.reload();
+                     })
+                      .catch((err) => {
+                         alert("Failed!");
+                         }); });
 }
 
 //Implementation of success banner after reservation
 function showBannerIfAlreadyReserved(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If user has already reserved this adventure, show the reserved-banner, else don't
-
+  if (adventure.reserved) {
+    document.getElementById("reserved-banner").style.display = "block";
+   }
+    else{
+       document.getElementById("reserved-banner").style.display = "none"; }
 }
 
 export {
