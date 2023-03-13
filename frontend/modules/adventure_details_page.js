@@ -65,14 +65,22 @@ function addBootstrapPhotoGallery(images) {
 function conditionalRenderingOfReservationPanel(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If the adventure is already reserved, display the sold-out message.
-
+  
+   if (adventure.available) {
+     document.getElementById("reservation-panel-sold-out").style.display ="none";
+      document.getElementById("reservation-panel-available").style.display ="block";
+       document.getElementById("reservation-person-cost").textContent = adventure.costPerHead; 
+      } 
+      else { document.getElementById("reservation-panel-available").style.display = "none"; document.getElementById("reservation-panel-sold-out").style.display ="block";
+    }
 }
 
 //Implementation of reservation cost calculation based on persons
 function calculateReservationCostAndUpdateDOM(adventure, persons) {
   // TODO: MODULE_RESERVATIONS
   // 1. Calculate the cost based on number of persons and update the reservation-cost field
-
+  let totalCost = adventure.costPerHead * persons;
+   document.getElementById("reservation-cost").textContent = totalCost;
 }
 
 //Implementation of reservation form submission
