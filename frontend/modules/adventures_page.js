@@ -3,8 +3,12 @@ import config from "../conf/index.js";
 
 //Implementation to extract city from query params
 function getCityFromURL(search) {
+
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+  let query= new URLSearchParams(search);
+  let city=query.get("city");
+  return city;
 
 }
 
@@ -12,13 +16,56 @@ function getCityFromURL(search) {
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+  try{
+  let response= fetch(config.backendEndpoint+ "/adventures?city=" + city);
+  let data=(await response).json();
+  return data;
 
 }
-
+catch(err){
+  return null;
+}
+}
 //Implementation of DOM manipulation to add adventures for the given city from list of adventures
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  let row=document.getElementById("data");
+  for( let i of adventures){
+let content=document.createElement("div");
+content.setAttribute("class","col-6 col-lg-3 mb-3");
+let link=document.createElement("a");
+link.setAttribute("id",i.id);
+link.setAttribute("href","detail/?adventure=" + i.id);
+let advcard=document.createElement("div");
+advcard.setAttribute("class","activity-card");
+let img=document.createElement("img");
+img.setAttribute("src",i.image);
+let category=document.createElement("div");
+category.textContent=i.category;
+category.setAttribute("class","category-banner");
+
+let text1 = document.createElement("div");
+ text1.setAttribute("id", "adv-card-text");
+  let p1 = document.createElement("div");
+  p1.textContent = i.name;
+  let p2 = document.createElement("div");
+  p2.innerHTML = "&#8377 " + i.costPerHead;
+  let text2 = document.createElement("div");
+  text2.setAttribute("id", "adv-card-text");
+  let p3 = document.createElement("div");
+  p3.textContent = "Duration";
+  let p4 = document.createElement("div");
+  p4.textContent = i.duration + " Hours";
+
+  advcard.append(img);
+  advcard.append(category);
+  advcard.append(text1);
+  advcard.append(text2);
+  link.append(advcard);
+  content.append(link);
+  row.append(content);
+  }
 
 }
 
